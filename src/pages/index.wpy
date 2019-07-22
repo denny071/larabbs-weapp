@@ -6,7 +6,7 @@
             <repeat for="{{topics}}" key="id" index="index" item="topic">
               <navigator url="" class="weui-media-box weui-media-box_appmsg" hover-class="weui-cell_active">
                   <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-                      <image class="weui-media-box__thumb" src="https://iocaffcdn.phphub.org/uploads/images/201710/14/1/Lhd1SHqu86.png" />
+                      <image class="weui-media-box__thumb" src="" />
                   </view>
                   <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
                       <view class="weui-media-box__title">{{topic.title}}</view>
