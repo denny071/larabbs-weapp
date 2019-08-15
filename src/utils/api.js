@@ -13,7 +13,9 @@ const request = async (options, showLoading = true) => {
   }
   // 显示加载中
   if (showLoading) {
-    wepy.showLoading({title: '加载中'})
+    wepy.showLoading({
+      title: '加载中'
+    })
   }
   // 拼接请求地址
   options.url = host + '/' + options.url
@@ -58,8 +60,6 @@ const login = async (params = {}) => {
 
   return authResponse
 }
-
-
 
 // 获取 Token
 const getToken = async (option) => {
@@ -125,7 +125,6 @@ const logout = async (params = {}) => {
 
 // 刷新令牌
 const refreshToken = async (accessToken) => {
-
   let refreshResponse = await wepy.request({
     url: host + '/' + 'authorizations/current',
     method: 'PUT',
