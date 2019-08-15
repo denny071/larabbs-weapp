@@ -1,3 +1,51 @@
+/*
+ * @Author: xuxiaoming
+ * @Date: 2019-08-15 11:07:26
+ * @Last Modified by: xuxiaoming
+ * @Last Modified time: 2019-08-15 11:25:31
+ */
+/*
+ * @Author: xuxiaoming
+ * @Date: 2019-08-15 11:07:25
+ * @Last Modified by:   xuxiaoming
+ * @Last Modified time: 2019-08-15 11:07:25
+ */
+/*
+ * @Author: xuxiaoming
+ * @Date: 2019-08-15 11:07:25
+ * @Last Modified by:   xuxiaoming
+ * @Last Modified time: 2019-08-15 11:07:25
+ */
+/*
+ * @Author: xuxiaoming
+ * @Date: 2019-08-15 11:07:24
+ * @Last Modified by:   xuxiaoming
+ * @Last Modified time: 2019-08-15 11:07:24
+ */
+/*
+ * @Author: xuxiaoming
+ * @Date: 2019-08-15 11:07:23
+ * @Last Modified by:   xuxiaoming
+ * @Last Modified time: 2019-08-15 11:07:23
+ */
+/*
+ * @Author: xuxiaoming
+ * @Date: 2019-08-15 11:07:23
+ * @Last Modified by:   xuxiaoming
+ * @Last Modified time: 2019-08-15 11:07:23
+ */
+/*
+ * @Author: xuxiaoming
+ * @Date: 2019-08-15 11:07:22
+ * @Last Modified by:   xuxiaoming
+ * @Last Modified time: 2019-08-15 11:07:22
+ */
+/*
+ * @Author: xuxiaoming
+ * @Date: 2019-08-15 11:07:20
+ * @Last Modified by:   xuxiaoming
+ * @Last Modified time: 2019-08-15 11:07:20
+ */
 <style lang="less">
   .register-wrap {
     margin-top: 50px;
@@ -26,6 +74,42 @@
           </view>
         </view>
         <view class="weui-cells__tops error-message" wx:if="{{ errors.phone}}">{{errors.phone[0]}}</view>
+        <view class="weui-cells__title {{ errors.verification_code ? 'weui-cell_warn' :''}}">短信验证码</view>
+        <view class="weui-cells weui-cells_after-title">
+          <view class="weui-cell weui-cell_input {{errors.verification_code ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__bd">
+              <input name="verification_code" placeholder="请输入短信验证码" class="weui-input">
+            </view>
+            <view class="weui-cell__ft">
+              <icon wx:if="{{ errors.verification_code}}" type=" warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+        </view>
+        <view class="weui-cells__tops error-message" wx:if="{{ errors.verification_code}}">{{errors.verification_code[0]}}</view>
+        <view class="weui-cells__title {{ errors.name ? 'weui-cell_warn' :''}}">姓名</view>
+        <view class="weui-cells weui-cells_after-title">
+          <view class="weui-cell weui-cell_input {{errors.name ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__bd">
+              <input name="name" placeholder="请输入姓名" class="weui-input">
+            </view>
+            <view class="weui-cell__ft">
+              <icon wx:if="{{ errors.name}}" type=" warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+        </view>
+        <view class="weui-cells__tops error-message" wx:if="{{ errors.name}}">{{errors.name[0]}}</view>
+        <view class="weui-cells__title {{ errors.password ? 'weui-cell_warn' :''}}">密码</view>
+        <view class="weui-cells weui-cells_after-title">
+          <view class="weui-cell weui-cell_input {{errors.password ? 'weui-cell_warn' : ''}}">
+            <view class="weui-cell__bd">
+              <input name="password" placeholder="请输入密码" class="weui-input">
+            </view>
+            <view class="weui-cell__ft">
+              <icon wx:if="{{ errors.password}}" type=" warn" size="23" color="#E64340"></icon>
+            </view>
+          </view>
+        </view>
+        <view class="weui-cells__tops error-message" wx:if="{{ errors.password}}">{{errors.password[0]}}</view>
         <view class="weui-btn-area">
           <button class="weui-btn" type="primary" formType="submit">注册</button>
         </view>
@@ -80,7 +164,6 @@
     async getCaptchaCode() {
       this.errors.phone = null
       // 判断手机号是否正确
-      console.log(this.phone)
       if (!(/^1[34578]\d{9}$/.test(this.phone))) {
         this.errors.phone = ['请输入正确的手机号']
         this.$apply()
@@ -95,8 +178,7 @@
             phone: this.phone
           }
         })
-        console.log(captchaResponse.statusCode)
-        console.log(captchaResponse.data.errors)
+
         // 表单错误
         if (captchaResponse.statusCode === 422) {
           this.errors = captchaResponse.data.errors
@@ -113,9 +195,64 @@
           this.captchaModalHidden = false
           this.$apply()
         }
-
       } catch (err) {
-        console.log(err)
+        wepy.showModal({
+          title: '提示',
+          content: '服务器错误，请联系管理员'
+        })
+      }
+    }
+    async submit(e) {
+      this.errors = {}
+      // 检查验证码是否过期
+      if (new Date().getTime() > this.verificationCode.expiredAt) {
+        wepy.showToast({
+          title: '验证码已过期',
+          icon: 'none',
+          duration: 2000
+        })
+        this.resetRegister()
+        return false
+      }
+      try {
+        let formData = e.detail.value
+        formData.verification_key = this.verificationCode.key
+        let loginData = await wepy.login()
+        // 参数中增加code，用于获取 openid 绑定当前用户
+        formData.code = loginData.code
+        let registerResponse = await api.request({
+          url: 'weapp/users',
+          method: 'POST',
+          data: formData
+        })
+        // 验证码错误
+        if (registerResponse.statusCode === 422) {
+          this.errors.verification_code = ['验证码错误']
+          this.$apply()
+        }
+        // 表单错误
+        if (registerResponse.statusCode === 422) {
+          this.errors = registerResponse.data.errors
+          this.$apply()
+        }
+        // 注册成功，记录token
+        if (registerResponse.statusCode === 201) {
+          wepy.setStorageSync('access_token', registerResponse.data.meta.access_token)
+          wepy.setStorageSync('access_token_expired_at', new Date().getTime() + registerResponse.data.meta.expires_in * 1000)
+          // 设置用户信息
+          wepy.setStorageSync('userInfo', registerResponse.data)
+          wepy.showToast({
+            title: '注册成功',
+            icon: 'success'
+          })
+          // 跳转到我的页面
+          setTimeout(function() {
+            wepy.switchTab({
+              url: '/pages/users/me'
+            })
+          }, 2000)
+        }
+      } catch (err) {
         wepy.showModal({
           title: '提示',
           content: '服务器错误，请联系管理员'
@@ -162,7 +299,7 @@
             }
           })
           // 验证码错误提示
-          if (codeResponse.statusCode === 401) {
+          if (codeResponse.statusCode === 422) {
             this.errors.captchaValue = ['图片验证码错误']
             this.$apply()
             await this.getCaptchaCode()
@@ -171,7 +308,7 @@
           // 记录 key 和 过期时间
           if (codeResponse.statusCode === 201) {
             this.verificationCode = {
-              key: codeResponse.data.captcha_key,
+              key: codeResponse.data.key,
               expiredAt: Date.parse(codeResponse.data.expired_at)
             }
             // 关闭model
@@ -183,7 +320,6 @@
             this.$apply()
           }
         } catch (err) {
-          console.log(err)
           wepy.showModal({
             title: '提示',
             content: '服务器错误，请联系管理员'
