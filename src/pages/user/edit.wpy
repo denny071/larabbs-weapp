@@ -137,7 +137,7 @@
             },
             filePath: avatar
           })
-          if (imageResponse.statusCode === 201) {
+          if (imageResponse.statusCode === 200) {
             // 小程序上传结果没有做 JSON.parse，需要手动处理
             let responseData = JSON.parse(imageResponse.data)
             this.user.avatar = responseData.path
