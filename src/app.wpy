@@ -19,8 +19,11 @@
     config = {
       pages: [
         'pages/index',
-        'pages/user',
-        'pages/login',
+
+        'pages/user/me',
+        'pages/user/edit',
+
+        'pages/auth/login',
         'pages/auth/register'
       ],
       window: {
@@ -36,7 +39,7 @@
           iconPath: 'images/index.png',
           selectedIconPath: 'images/index_selected.png'
         }, {
-          pagePath: 'pages/user',
+          pagePath: 'pages/user/me',
           text: '我的',
           iconPath: 'images/user.png',
           selectedIconPath: 'images/user_selected.png'
