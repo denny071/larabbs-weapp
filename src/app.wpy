@@ -19,6 +19,7 @@
     config = {
       pages: [
         'pages/topics/index',
+        'pages/topics/show',
 
         'pages/user/me',
         'pages/user/edit',
