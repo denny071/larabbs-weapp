@@ -24,6 +24,7 @@
 
         'pages/user/me',
         'pages/user/edit',
+        'pages/user/show',
 
         'pages/auth/login',
         'pages/auth/register'
