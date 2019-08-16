@@ -1,0 +1,43 @@
+<template>
+  <view class="page">
+    <view class="page__bd">
+      <topicList :syncData.sync="requestData" :syncUrl.sync="requestUrl"></topicList>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import topicList from '@/components/topicList'
+
+  export default class UserIndex extends wepy.page {
+    config = {
+      navigationBarTitleText: 'Ta 发布的话题',
+      enablePullDownRefresh: true
+    }
+    data = {
+      requestData: {},
+      requestUrl: null
+    }
+    components = {
+      topicList: topicList
+    }
+    onLoad(options) {
+      this.requestUrl = 'user/' + options.user_id + '/topics'
+      // 主键数据改变，也需要调用 this.$appy()
+      this.$apply()
+      // 调用主键 reload 方法
+      this.$invoke('topicList', 'reload')
+    }
+    // 下拉刷新
+    async onPullDownRefresh() {
+      // 调用组件 reload 方法
+      await this.$invoke('topicList', 'reload')
+      wepy.stopPullDownRefresh()
+    }
+    // 上拉加载更多
+    onReachBottom () {
+      // 调用组件 loadMore 方法
+      this.$invoke('topicList', 'loadMore')
+    }
+  }
+</script>
