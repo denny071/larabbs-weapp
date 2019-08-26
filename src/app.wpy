@@ -14,18 +14,15 @@
   import wepy from 'wepy'
   import 'wepy-async-function'
   import api from '@/utils/api'
-
   export default class extends wepy.app {
     config = {
       pages: [
         'pages/topics/index',
         'pages/topics/show',
         'pages/topics/userIndex',
-
         'pages/user/me',
         'pages/user/edit',
         'pages/user/show',
-
         'pages/auth/login',
         'pages/auth/register'
       ],
@@ -52,7 +49,15 @@
       }
     }
     globalData = {
-      userInfo: null
+      refreshPages: []
+    }
+    checkRefreshPages(route, callback) {
+      let refreshIndex = this.globalData.refreshPages.indexOf(route)
+      if (refreshIndex === -1) {
+        return
+      }
+      this.globalData.refreshPages.splice(refreshIndex, 1)
+      callback && callback()
     }
     constructor() {
       super()
@@ -67,7 +72,7 @@
         return null
       }
       // 从缓存中获取用户信息
-      let user = wepy.getStorageSync('user');
+      let user = wepy.getStorageSync('user')
       try {
         // 登录了但是缓存中没有，请求接口数据获取
         if (!user) {
@@ -75,14 +80,14 @@
           // 状态码为 200 表示请求成功
           if (userResponse.statusCode === 200) {
             user = userResponse.data
-            wepy.setStorageSync('user', user);
+            wepy.setStorageSync('user', user)
           }
         }
       } catch (err) {
         wepy.showModal({
           title: '提示',
           content: '服务器错误，请联系管理员'
-        });
+        })
       }
       return user
     }
