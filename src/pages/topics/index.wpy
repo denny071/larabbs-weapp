@@ -20,8 +20,7 @@
   .reply-count {
     background-color: #d8d8d8;
     float: right;
-  }
-  // 分类
+  } // 分类
   .weui-flex {
     align-items: center;
   }
@@ -29,7 +28,8 @@
     margin-top: 0;
     opacity: 0;
     transition: .3s;
-    &::before, &::after {
+    &::before,
+    &::after {
       display: none;
     }
     &_show {
@@ -92,7 +92,6 @@
     <view class="page__bd">
       <!-- 使用 topiclist，传入requestData 数据-->
       <topicList :syncData.sync="requestData"></topicList>
-
     </view>
   </view>
 </template>
@@ -101,7 +100,6 @@
   import wepy from 'wepy'
   import api from '@/utils/api'
   import topicList from '@/components/topicList'
-
   export default class TopicIndex extends wepy.page {
     config = {
       enablePullDownRefresh: true
@@ -149,7 +147,11 @@
       this.categories = categories
       this.$apply()
     }
-
+    onShow() {
+      this.$parent.checkRefreshPages(this.getCurrentPages().pop().route, () => {
+        this.$invoke('topicList', 'reload')
+      })
+    }
     async onLoad() {
       // 获取分类数据
       this.getCategories()
@@ -175,7 +177,6 @@
         // 点击以后关闭下拉列表
         this.categoryOpen = false
         this.$apply()
-
         this.requestData.category_id = this.currentCategoryId
         // 调用组件的 reload 方法
         this.$invoke('topicList', 'reload')

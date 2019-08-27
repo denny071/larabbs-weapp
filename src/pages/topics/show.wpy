@@ -42,7 +42,7 @@
       </view>
       <view class="weui-article">
         <rich-text type="node" nodes="{{topic.body}}" bindtap="tap"></rich-text>
-        <button if="{{ canDelete }}" @tap="deleteTopic" class="weui-btn mini-btn" type="default" size="mini">删除</button>
+        <button wx:if="{{ canDelete }}" @tap="deleteTopic" class="weui-btn mini-btn" type="default" size="mini">删除</button>
       </view>
     </view>
   </view>
@@ -138,7 +138,6 @@
           })
           // 设置全局变量，控制列表刷新
           let pages = this.getCurrentPages()
-          console.log('TCL: TopicShow -> deleteTopic -> pages', pages)
           // 如果有上一页
           if (pages.length > 1) {
             // 检查所有已经打开的页面，如果是话题列表就记录下来
@@ -152,10 +151,10 @@
             this.$parent.globalData.refreshPages = this.$parent.globalData.refreshPages.concat(refreshPages)
             this.$apply()
           }
-          // 2 秒后返回上一页
+          // 1 秒后返回上一页
           setTimeout(function() {
             wepy.navigateBack()
-          }, 5000)
+          }, 1000)
         }
       }
     }

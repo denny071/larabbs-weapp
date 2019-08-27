@@ -5,10 +5,10 @@
     </view>
   </view>
 </template>
+
 <script>
   import wepy from 'wepy'
   import topicList from '@/components/topicList'
-
   export default class UserIndex extends wepy.page {
     config = {
       navigationBarTitleText: 'Ta 发布的话题',
@@ -28,6 +28,11 @@
       // 调用主键 reload 方法
       this.$invoke('topicList', 'reload')
     }
+    onShow() {
+      this.$parent.checkRefreshPages(this.getCurrentPages().pop().route, () => {
+        this.$invoke('topicList', 'reload')
+      })
+    }
     // 下拉刷新
     async onPullDownRefresh() {
       // 调用组件 reload 方法
@@ -35,7 +40,7 @@
       wepy.stopPullDownRefresh()
     }
     // 上拉加载更多
-    onReachBottom () {
+    onReachBottom() {
       // 调用组件 loadMore 方法
       this.$invoke('topicList', 'loadMore')
     }
