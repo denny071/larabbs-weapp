@@ -22,6 +22,7 @@
         'pages/topics/userIndex',
         'pages/replies/index',
         'pages/replies/userIndex',
+        'pages/replies/create',
         'pages/user/me',
         'pages/user/edit',
         'pages/user/show',

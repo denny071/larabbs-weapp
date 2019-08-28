@@ -15,6 +15,13 @@
   .topic-title {
     padding: 15px;
   }
+  .create-reply {
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    }
 </style>
 
 <template>
@@ -72,6 +79,9 @@
           </navigator>
         </view>
       </view>
+      <navigator url="/pages/replies/create?topic_id={{ topic.id}}">
+        <image src="/images/reply.png" class="create-reply" />
+      </navigator>
     </view>
   </view>
 </template>
@@ -126,7 +136,9 @@
           wepy.navigateBack()
         }
       } catch (err) {
-        console.log("TCL: TopicShow -> getTopic -> err", err)
+        console.log('TCL: -------------------------------------')
+        console.log('TCL: TopicShow -> getTopic -> err', err)
+        console.log('TCL: -------------------------------------')
         wepy.showModal({
           title: '提示',
           content: '服务器错误，请联系管理员'
@@ -139,10 +151,10 @@
       this.user = await this.$parent.getCurrentUser()
       this.$apply()
     }
-    onshow() {
+    async onShow() {
       this.$parent.checkRefreshPages(this.getCurrentPages().pop().route, () => {
         console.log('TCL: TopicShow -> onshow -> this.getCurrentPages()', this.getCurrentPages())
-        this.$invoke('topiclist', 'reload')
+        this.getTopic(this.topic.id)
       })
     }
     methods = {
