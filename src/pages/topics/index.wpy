@@ -100,6 +100,7 @@
   import wepy from 'wepy'
   import api from '@/utils/api'
   import topicList from '@/components/topicList'
+  import unreadCount from '@/mixins/unreadCount'
   export default class TopicIndex extends wepy.page {
     config = {
       enablePullDownRefresh: true
@@ -126,6 +127,7 @@
         return this.currentCategory.id || 0
       }
     }
+    mixins = [unreadCount]
     async getCategories() {
       // 从缓存中获取分类数据
       let categories = wepy.getStorageSync('categories')

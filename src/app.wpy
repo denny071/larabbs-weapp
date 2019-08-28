@@ -52,7 +52,8 @@
       }
     }
     globalData = {
-      refreshPages: []
+      refreshPages: [],
+      unreadCount: 0
     }
     checkRefreshPages(route, callback) {
       let refreshIndex = this.globalData.refreshPages.indexOf(route)
@@ -67,7 +68,12 @@
       this.use('requestfix')
       this.use('promisify')
     }
-    onLaunch() {}
+    onLaunch() {
+      this.updateUnreadCount()
+      setInterval(() => {
+        this.updateUnreadCount()
+      }, 60000)
+    }
     // 获得当前登录用户信息
     async getCurrentUser() {
       // 用户未登录
@@ -97,6 +103,18 @@
     // 用户是否已经登录
     checkLogin() {
       return (wepy.getStorageSync('access_token') !== '')
+    }
+    async updateUnreadCount() {
+      if (!this.checkLogin) {
+        return
+      }
+      let notificationResponse = await api.authRequest('user/notifications/stats', false)
+      console.log('TCL: ------------------------------------------------------------------------------')
+      console.log('TCL: extends -> updateUnreadCount -> notificationResponse', notificationResponse)
+      console.log('TCL: ------------------------------------------------------------------------------')
+      if (notificationResponse.statusCode === 200) {
+        this.globalData.unreadCount = notificationResponse.data.unread_count
+      }
     }
   }
 </script>
