@@ -20,6 +20,7 @@
         'pages/topics/index',
         'pages/topics/show',
         'pages/topics/userIndex',
+        'pages/replies/index',
         'pages/user/me',
         'pages/user/edit',
         'pages/user/show',
