@@ -2,7 +2,7 @@
  * @Author: xuxiaoming
  * @Date: 2019-08-15 11:07:26
  * @Last Modified by: xuxiaoming
- * @Last Modified time: 2019-08-29 14:42:24
+ * @Last Modified time: 2019-08-29 15:04:06
  */
 /*
  * @Author: xuxiaoming
@@ -121,7 +121,7 @@
             <input class="weui-input" placeholder="图片验证码" type="number" @change="bindCaptchaCodeInput" />
           </view>
           <view class="weui-cell__ft">
-            <image class="weui-vcode-img" @tap="tapCaptchaCode" src="{{captcha.imageContent}}" style="width:100px"></image>
+            <image class="weui-vcode-img" @tap="tapCaptchaCode" src="{{captcha.imageContent}}" style="width:100px" />
           </view>
         </view>
       </modal>

@@ -1,7 +1,7 @@
 import wepy from 'wepy'
 
 // 服务器接口地址
-const host = 'http://larabbs/api'
+const host = __BASE_URL__
 
 // 普通请求
 const request = async (options, showLoading = true) => {
@@ -143,7 +143,9 @@ const refreshToken = async (accessToken) => {
 
 const updateFile = async (options = {}) => {
   // 显示loading
-  wepy.showLoading({title: '上传中'})
+  wepy.showLoading({
+    title: '上传中'
+  })
   // 获取 token
 
   let accessToken = await getToken()
