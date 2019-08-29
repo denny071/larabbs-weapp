@@ -127,9 +127,6 @@
           wepy.setStorageSync('perms', perms)
         }
       } catch (err) {
-        console.log('TCL: -----------------------------------')
-        console.log('TCL: extends -> getPerms -> err', err)
-        console.log('TCL: -----------------------------------')
         wepy.showModal({
           title: '提示',
           content: '获取用户权限失败，可尝试重启小程序'
@@ -142,9 +139,6 @@
         return false
       }
       let perms = wepy.getStorageSync('perms') || []
-      console.log('TCL: ----------------------------------')
-      console.log('TCL: extends -> can -> perms', perms)
-      console.log('TCL: ----------------------------------')
       // 判断权限是否有目标权限
       if (perms.find(perm => perm.name === targetPerm)) {
         return true
