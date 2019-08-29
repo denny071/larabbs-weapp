@@ -23,6 +23,7 @@
         'pages/replies/index',
         'pages/replies/userIndex',
         'pages/replies/create',
+        'pages/notifications/index',
         'pages/user/me',
         'pages/user/edit',
         'pages/user/show',
@@ -109,9 +110,6 @@
         return
       }
       let notificationResponse = await api.authRequest('user/notifications/stats', false)
-      console.log('TCL: ------------------------------------------------------------------------------')
-      console.log('TCL: extends -> updateUnreadCount -> notificationResponse', notificationResponse)
-      console.log('TCL: ------------------------------------------------------------------------------')
       if (notificationResponse.statusCode === 200) {
         this.globalData.unreadCount = notificationResponse.data.unread_count
       }
