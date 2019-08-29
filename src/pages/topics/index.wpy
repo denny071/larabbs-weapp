@@ -84,7 +84,7 @@
         <view @tap="changeCatgory()" class="weui-cell weui-cell_access {{ !currentCategory.id ? 'category-list__item_selected' : ''}}">
           <view class="weui-cell__bd">话题</view>
         </view>
-        <view @tap="changeCatgory({{category.id}})" class="weui-cell weui-cell_access {{ currentCategory.id == category.id ? 'category-list__item_selected' : ''}}" wx:for="{{categories}}" wx:for-item="category" wx:key="id">
+        <view bindtap="changeCatgory({{category.id}})" class="weui-cell weui-cell_access {{ currentCategory.id == category.id ? 'category-list__item_selected' : ''}}" wx:for="{{categories}}" wx:for-item="category" wx:key="id">
           <view class="weui-cell__bd">{{category.name}}</view>
         </view>
       </view>

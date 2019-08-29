@@ -2,7 +2,7 @@
  * @Author: xuxiaoming
  * @Date: 2019-08-15 11:07:26
  * @Last Modified by: xuxiaoming
- * @Last Modified time: 2019-08-15 11:25:31
+ * @Last Modified time: 2019-08-29 14:42:24
  */
 /*
  * @Author: xuxiaoming
@@ -241,6 +241,9 @@
           wepy.setStorageSync('access_token_expired_at', new Date().getTime() + registerResponse.data.meta.expires_in * 1000)
           // 设置用户信息
           wepy.setStorageSync('userInfo', registerResponse.data)
+
+          this.$parent.getPerms()
+
           wepy.showToast({
             title: '注册成功',
             icon: 'success'

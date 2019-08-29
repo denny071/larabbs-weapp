@@ -74,6 +74,7 @@
       setInterval(() => {
         this.updateUnreadCount()
       }, 60000)
+      this.getPerms()
     }
     // 获得当前登录用户信息
     async getCurrentUser() {
@@ -113,6 +114,42 @@
       if (notificationResponse.statusCode === 200) {
         this.globalData.unreadCount = notificationResponse.data.unread_count
       }
+    }
+    async getPerms() {
+      let perms = []
+      if (!this.checkLogin()) {
+        return perms
+      }
+      try {
+        let permsResponse = await api.authRequest('user/permissions', false)
+        if (permsResponse.statusCode === 200) {
+          perms = permsResponse.data.data
+          wepy.setStorageSync('perms', perms)
+        }
+      } catch (err) {
+        console.log('TCL: -----------------------------------')
+        console.log('TCL: extends -> getPerms -> err', err)
+        console.log('TCL: -----------------------------------')
+        wepy.showModal({
+          title: '提示',
+          content: '获取用户权限失败，可尝试重启小程序'
+        })
+      }
+      return perms
+    }
+    can(targetPerm) {
+      if (!this.checkLogin()) {
+        return false
+      }
+      let perms = wepy.getStorageSync('perms') || []
+      console.log('TCL: ----------------------------------')
+      console.log('TCL: extends -> can -> perms', perms)
+      console.log('TCL: ----------------------------------')
+      // 判断权限是否有目标权限
+      if (perms.find(perm => perm.name === targetPerm)) {
+        return true
+      }
+      return false
     }
   }
 </script>

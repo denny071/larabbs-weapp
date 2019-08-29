@@ -21,7 +21,7 @@
     position: fixed;
     bottom: 30px;
     right: 30px;
-    }
+  }
 </style>
 
 <template>
@@ -108,7 +108,7 @@
           return false
         }
         // 当前用户话题的发布者
-        return this.user.id === this.topic.user_id
+        return (this.user.id === this.topic.user_id) || this.$parent.can('manage_contents')
       }
     }
     // 获得话题数据
