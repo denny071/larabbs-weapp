@@ -19,9 +19,6 @@ export default class unreadCount extends wepy.mixin {
 
   updateUnreadCount() {
     this.unreadCount = this.$parent.globalData.unreadCount
-    console.log('TCL: --------------------------------------------------------------------------')
-    console.log('TCL: unreadCount -> updateUnreadCount -> this.unreadCount', this.unreadCount)
-    console.log('TCL: --------------------------------------------------------------------------')
     this.$apply()
 
     if (this.unreadCount) {

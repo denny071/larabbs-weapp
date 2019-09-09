@@ -136,9 +136,6 @@
           wepy.navigateBack()
         }
       } catch (err) {
-        console.log('TCL: -------------------------------------')
-        console.log('TCL: TopicShow -> getTopic -> err', err)
-        console.log('TCL: -------------------------------------')
         wepy.showModal({
           title: '提示',
           content: '服务器错误，请联系管理员'
@@ -153,7 +150,6 @@
     }
     async onShow() {
       this.$parent.checkRefreshPages(this.getCurrentPages().pop().route, () => {
-        console.log('TCL: TopicShow -> onshow -> this.getCurrentPages()', this.getCurrentPages())
         this.getTopic(this.topic.id)
       })
     }
@@ -162,16 +158,8 @@
         title: this.topic.title,
         path: '/pages/topics/show?id=' + this.topic.id,
         imageUrl: this.user.avatar,
-        success: res => {
-          console.log('TCL: ----------------------------------------------')
-          console.log('TCL: TopicShow -> onShareAppMessage -> success', res)
-          console.log('TCL: ----------------------------------------------')
-        },
-        fail: res => {
-          console.log('TCL: ----------------------------------------------')
-          console.log('TCL: TopicShow -> onShareAppMessage -> fail', res)
-          console.log('TCL: ----------------------------------------------')
-        },
+        success: res => {},
+        fail: res => {},
       };
     }
     methods = {

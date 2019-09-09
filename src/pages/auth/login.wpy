@@ -1,13 +1,13 @@
 <style type="less">
-.login-wrap {
-  margin-top: 50px;
-}
+  .login-wrap {
+    margin-top: 50px;
+  }
 </style>
+
 <template>
   <view class="page">
     <view class="page__bd login-wrap">
       <view class="weui-toptips weui-toptips_warn" wx:if="{{error}}">{{errorMessage}}</view>
-
       <view class="weui-cells__title">Larabbs 用户登录</view>
       <view class="weui-cells weui-cells_after-title">
         <view class="weui-cell weui-cell_input {{ error ? 'weui-cell_warn' : ''}}">
@@ -34,7 +34,8 @@
         </view>
       </view>
       <view class="'weui-agree__text'">
-        如果你还没有 Larabss 用户可以 <navigator url="/pages/auth/register" class="weui-agree__link">注册</navigator>
+        如果你还没有 Larabss 用户可以
+        <navigator url="/pages/auth/register" class="weui-agree__link">注册</navigator>
       </view>
       <view class="weui-btn-area">
         <button class="weui-btn" type="primary" @tap="submmit">登录</button>
@@ -47,7 +48,6 @@
 <script>
   import wepy from 'wepy'
   import api from '@/utils/api'
-
   export default class Login extends wepy.page {
     config = {
       navigationBarTitleText: '登录'
@@ -59,21 +59,19 @@
       errorMessage: ''
     }
     methods = {
-      bindUsernameChange (e) {
+      bindUsernameChange(e) {
         this.username = e.detail.value
       },
-      bindPasswordChange (e) {
+      bindPasswordChange(e) {
         this.password = e.detail.value
       },
       async submmit() {
         this.error = false
-
         // 获取用户名和密码
         let params = {
           username: this.username,
           password: this.password
         }
-
         try {
           let authResponse = await api.login(params)
           console.log(authResponse.statusCode)
@@ -82,7 +80,6 @@
             this.errorMessage = authResponse.data.message
             this.$apply()
           }
-
           if (authResponse.statusCode === 201) {
             this.$parent.getPerms()
             wepy.navigateBack()
@@ -96,11 +93,8 @@
       }
     }
     async onShow() {
-
-
       try {
         let authResponse = await api.login()
-
         if (authResponse.statusCode === 201) {
           this.$parent.getPerms()
           wepy.navigateBack()
@@ -114,8 +108,6 @@
           content: '服务器错误，请联系管理员'
         })
       }
-
-
     }
   }
 </script>

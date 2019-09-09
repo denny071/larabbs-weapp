@@ -77,7 +77,7 @@ if (prod) {
       filter: /\.js$/,
       config: {
         find: /__BASE_URL__/g,
-        replace: prod ? 'https://weapp.larabbs.org/api' : "'http://larabbs/api'"
+        replace: prod ? "'https://weapp.larabbs.org/api'" : "'http://larabbs/api'"
       }
     }
   }
